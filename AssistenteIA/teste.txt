@@ -1,0 +1,36 @@
+Paciente do sexo masculino, 67 anos, com queixa de dor torácica intensa irradiando para o braço esquerdo, sudorese fria e náuseas iniciadas há 40 minutos. Pressão arterial de 150/100 mmHg, frequência cardíaca de 110 bpm, saturação de oxigênio em 96%. Sem histórico prévio de infarto.
+
+Paciente com 75 anos, portador de DPOC, apresenta dispneia intensa, tosse produtiva e chiado no peito há 2 dias. Saturação de oxigênio em 88%, uso de musculatura acessória para respirar. Está consciente e orientado.
+
+Paciente do sexo feminino, 40 anos, com febre há 3 dias, dor de garganta, tosse seca e cefaleia. Afebril no momento da triagem, saturação 98%, ausculta pulmonar normal.
+
+Paciente de 25 anos, com dor lombar de leve intensidade após esforço físico, sem irradiação ou sintomas neurológicos. Sinais vitais normais.
+
+Paciente de 30 anos que procura o serviço com queixa de dor de cabeça leve, associada a estresse no trabalho. Sem febre, sem outros sintomas. Sinais vitais normais.
+
+##Exemplo cap 9 cid 10
+
+🔴 Vermelha (Emergência imediata)
+Paciente do sexo masculino, 72 anos, com dor torácica intensa há mais de 30 minutos, irradiação para braço esquerdo, sudorese, náuseas e pressão arterial 180/110 mmHg.
+Classificação: Vermelha
+Encaminhamento: Atendimento imediato na sala de emergência.
+
+🟠 Laranja (Atendimento muito urgente)
+Paciente do sexo feminino, 60 anos, com dor epigástrica intensa, vômitos persistentes e PA 160/100 mmHg. História prévia de úlcera.
+Classificação: Laranja
+Encaminhamento: Atendimento médico urgente com suporte clínico.
+
+🟡 Amarela (Atendimento urgente)
+Paciente do sexo masculino, 68 anos, com dor torácica leve recorrente nos últimos 2 dias, melhora com repouso. Sem sinais de sofrimento agudo. PA 145/90 mmHg.
+Classificação: Amarela
+Encaminhamento: Avaliação médica prioritária e monitoramento.
+
+🟢 Verde (Pouco urgente)
+Paciente do sexo feminino, 34 anos, relata dor de garganta há 2 dias, febre baixa e tosse seca. Sinais vitais estáveis, sem sinais de gravidade.
+Classificação: Verde
+Encaminhamento: Consultório clínico para avaliação ambulatorial.
+
+🔵 Azul (Não urgente)
+Paciente do sexo masculino, 29 anos, com cefaleia leve intermitente associada a estresse. Sem sinais neurológicos, PA 120/75 mmHg.
+Classificação: Azul
+Encaminhamento: Atendimento ambulatorial em momento oportuno.
