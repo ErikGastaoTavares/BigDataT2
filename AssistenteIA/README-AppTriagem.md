@@ -1,113 +1,106 @@
+
 # Aplicativo Principal de Triagem Clínica
 
-Este documento explica o funcionamento do aplicativo principal de triagem clínica (`app-bd-validacao.py`).
+Este aplicativo é uma interface web desenvolvida com **Streamlit** que utiliza um **modelo de linguagem local (Mistral via Ollama)** para auxiliar profissionais de saúde na **classificação clínica de diagnósticos com base na CID-10**. A aplicação faz uso de **embeddings semânticos**, **banco vetorial ChromaDB** e um **banco de dados relacional SQLite** para armazenamento e aprendizado contínuo.
 
-## Visão Geral
+---
 
-O aplicativo principal é uma interface web construída com Streamlit que permite aos profissionais de saúde:
+## Funcionalidades
 
-1. Inserir sintomas de pacientes
-2. Obter classificações de risco segundo o Protocolo de Manchester
-3. Enviar triagens para validação por especialistas
+- Entrada de sintomas clínicos via interface
+- Busca por casos similares em banco vetorial
+- Geração de diagnóstico provável com código CID-10
+- Classificação de risco segundo o Protocolo de Manchester (com cor e emoji)
+- Sugestão de condutas clínicas iniciais
+- Envio da triagem para validação por especialistas
+- Armazenamento da triagem com ID único e data/hora
+- Aprendizado contínuo a partir dos casos validados
+
+---
 
 ## Tecnologias Utilizadas
 
-- **Streamlit**: Framework para interface web
-- **LlamaIndex**: Framework para construção de aplicações com LLMs
-- **Ollama/Mistral**: Modelo de linguagem local para geração de texto
-- **ChromaDB**: Banco de dados vetorial para armazenamento de embeddings
-- **SQLite**: Banco de dados relacional para armazenamento de triagens
-- **Sentence Transformers**: Biblioteca para geração de embeddings semânticos
+- **Streamlit**
+- **LlamaIndex** + **Ollama (modelo Mistral)**
+- **ChromaDB**
+- **SQLite**
+- **Sentence Transformers**
+- **Python 3.10**
 
-## Fluxo de Funcionamento
+---
 
-### 1. Inicialização
+## Fluxo do Sistema
 
-- Carrega o modelo de linguagem Mistral via Ollama
-- Inicializa o banco de dados ChromaDB para armazenar embeddings
-- Inicializa o banco de dados SQLite para armazenar triagens
-- Configura a interface Streamlit
+```text
+[Entrada de Sintomas]
+        ↓
+[Embeddings + ChromaDB]
+        ↓
+[Casos Similares] → [Modelo Mistral]
+                            ↓
+[Diagnóstico + Risco + Conduta]
+                            ↓
+[Validação por Especialistas]
+        ↓                         ↓
+[Base Vetorial]         [SQLite com histórico]
+```
 
-### 2. Classificação de Pacientes
-
-Quando o usuário insere sintomas e clica em "Classificar e gerar conduta":
-
-1. O sistema carrega o modelo de embeddings (Sentence Transformers)
-2. Carrega os casos de exemplo do arquivo `casos.txt`
-3. Converte os casos em embeddings e os armazena no ChromaDB (se ainda não existirem)
-4. Converte os sintomas do paciente em embedding
-5. Busca os 3 casos mais similares no banco de dados vetorial
-6. Envia os sintomas e os casos similares para o modelo Mistral
-7. Exibe a classificação de risco, justificativa e condutas sugeridas
-
-### 3. Envio para Validação
-
-Após a classificação, o usuário pode clicar em "Enviar para validação por especialistas":
-
-1. O sistema gera um ID único para a triagem
-2. Armazena os sintomas, a resposta e a data/hora no banco de dados SQLite
-3. Exibe uma mensagem de confirmação com o ID da triagem
-
-## Estrutura do Código
-
-### Funções Principais
-
-- `init_validation_db()`: Inicializa o banco de dados de validação
-- `salvar_para_validacao()`: Salva uma triagem no banco de dados para validação
-- `embed_text()`: Converte texto em embedding (vetor numérico)
-- `load_triagem_cases()`: Carrega casos de triagem do arquivo
-
-### Variáveis de Estado
-
-O aplicativo utiliza o sistema de estado do Streamlit para manter informações entre interações:
-
-- `st.session_state.resposta_atual`: Armazena a resposta atual do modelo
-- `st.session_state.sintomas_atuais`: Armazena os sintomas atuais
-- `st.session_state.enviado_para_validacao`: Controla se a triagem atual já foi enviada
-- `st.session_state.triagem_id`: Armazena o ID da triagem enviada
-
-## Interface do Usuário
-
-A interface é composta por:
-
-1. **Título**: "Assistente de Triagem Clínica - HCI"
-2. **Campo de texto**: Para inserir os sintomas do paciente
-3. **Botão "Classificar e gerar conduta"**: Para iniciar a classificação
-4. **Resultado da triagem**: Exibe a classificação, justificativa e condutas
-5. **Botão "Enviar para validação por especialistas"**: Para enviar a triagem para validação
-6. **Seção "Sobre o sistema de validação"**: Informações sobre o processo de validação
-7. **Seção "Área de Administração"**: Informações sobre o painel administrativo
+---
 
 ## Como Executar
 
+### 1. Pré-requisitos
+
+- Python 3.10
+- Ollama instalado (`https://ollama.com/download`)
+- Modelo Mistral baixado:  
+  `ollama pull mistral`
+
+### 2. Ambiente Virtual e Instalações
+
 ```bash
-streamlit run app-bd-validacao.py
+python -m venv venv310
+.env310\Scriptsctivate
+
+pip install --upgrade pip
+pip install streamlit llama-index llama-index-llms-ollama "llama-index[llms]"
+pip install chromadb sentence-transformers nest_asyncio pandas
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
-O aplicativo será aberto no navegador em http://localhost:8501.
+### 3. Executar o Aplicativo
 
-## Integração com o Painel Administrativo
-
-Este aplicativo se integra com o painel administrativo (`admin-validacao.py`) através do banco de dados SQLite. As triagens enviadas para validação podem ser acessadas e validadas pelos especialistas no painel administrativo.
-
-## Fluxo de Dados
-
-```
-[Sintomas do Paciente] → [Embedding] → [Busca por Similaridade] → [Casos Similares]
-                                                                       ↓
-[Resposta Exibida] ← [Modelo Mistral] ← [Prompt com Sintomas e Casos Similares]
-        ↓
-[Envio para Validação] → [Banco de Dados SQLite] → [Painel Administrativo]
+```bash
+streamlit run AppTriagem.py
 ```
 
-## Requisitos
+Acesse [http://localhost:8501](http://localhost:8501)
 
-- Python 3.10 ou superior
-- Ollama instalado e configurado com o modelo Mistral
-- Dependências Python listadas no arquivo `requirements.txt`
+---
+
+## Interface do Usuário
+
+- Campo de texto para sintomas
+- Botão **“Diagnosticar”**
+- Exibição:
+  - Diagnóstico (CID-10)
+  - Classificação de Risco (cor + emoji)
+  - Justificativa clínica
+  - Conduta clínica inicial
+- Botão **“Enviar para validação por especialistas”**
+- Informações sobre o sistema de validação
+
+---
+
+## Integração com Painel de Validação
+
+As triagens são salvas no banco `validacao_triagem.db` com um identificador único. Profissionais autorizados acessam o painel (`AppAdminMedico.py`) para validar ou rejeitar os casos e fornecer feedback, que é incorporado ao banco de conhecimento vetorial.
+
+---
 
 ## Observações
 
-- O aplicativo utiliza um modelo local (Mistral via Ollama), o que garante privacidade dos dados
-- Os casos validados pelos especialistas são incorporados ao banco de conhecimento, melhorando progressivamente a precisão das classificações
-- O sistema é projetado para ser usado em ambiente clínico, mas não substitui o julgamento profissional
+- O sistema não substitui o julgamento clínico.
+- O modelo funciona localmente, mantendo a privacidade dos dados.
+- Casos validados melhoram automaticamente a precisão do sistema.
+
