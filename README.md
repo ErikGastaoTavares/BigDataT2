@@ -64,7 +64,7 @@ Baixe: [Python 3.10.11](https://www.python.org/ftp/python/3.10.11/python-3.10.11
 
 ```powershell
 python -m venv venv310
-.env310\Scripts\Activate.ps1
+.venv310\Scripts\Activate.ps1
 ```
 
 ### 5. Instalar dependências
@@ -97,7 +97,7 @@ Acesse: [http://localhost:8501](http://localhost:8501)
   - **Classificação de Risco** (colorida e com emoji)
   - **Justificativa Clínica**
   - **Conduta Clínica Inicial**
-- Botão **"Enviar para validação por especialistas"**
+- Botão **"Diagnosticar"**
 - Seção informativa sobre o processo de validação
 
 ---
